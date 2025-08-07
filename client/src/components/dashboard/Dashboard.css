@@ -1,0 +1,28 @@
+/* Custom scrollbar styles for recent bets */
+.recent-bets-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.recent-bets-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.recent-bets-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.recent-bets-scroll::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.recent-bets-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Hover effect for bet items */
+.recent-bets-scroll > div:hover {
+  background-color: #f8f9fa;
+}
