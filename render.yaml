@@ -1,0 +1,33 @@
+databases:
+  - name: betcontrol-db
+    databaseName: betcontrol
+    user: betcontrol_user
+
+services:
+  - type: web
+    name: betcontrol-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm run server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: POSTGRES_URI
+        fromDatabase:
+          name: betcontrol-db
+          property: connectionString
+    plan: free
+
+  - type: web
+    name: betcontrol-client
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: ./client/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://betcontrol-api.onrender.com
+    plan: free
