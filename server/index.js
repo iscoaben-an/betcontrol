@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const betRoutes = require('./routes/bets');
 const statsRoutes = require('./routes/stats');
 const aiRoutes = require('./routes/ai');
+const initRoutes = require('./routes/init');
 
 // Configuración según el entorno
 const isProduction = process.env.NODE_ENV === 'production';
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bets', betRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/init', initRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
