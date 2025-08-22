@@ -172,11 +172,35 @@ heroku logs --tail
 
 ---
 
+## 🔐 Credenciales de Acceso
+
+### **Usuario de prueba creado automáticamente:**
+- **Email**: `admin@betcontrol.com`
+- **Contraseña**: `123456`
+
+### **Para crear el usuario de prueba:**
+```bash
+# En desarrollo local
+npm run init-user
+
+# En producción (después del despliegue)
+# Ejecuta el script desde la consola de Render/Railway/Heroku
+node server/scripts/init-user.js
+```
+
+### **Para crear nuevos usuarios:**
+1. Ve a la aplicación desplegada
+2. Haz clic en "Registrarse"
+3. Crea tu cuenta personal
+
+---
+
 ## 📞 Soporte
 
 Si tienes problemas con el despliegue:
 1. Revisa los logs de la plataforma
 2. Verifica las variables de entorno
 3. Asegúrate de que el repositorio esté actualizado
+4. Ejecuta el script de inicialización de usuario
 
 ¡Tu aplicación estará en vivo en minutos! 🎉
