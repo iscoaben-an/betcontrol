@@ -11,6 +11,62 @@ const pool = new Pool({
   connectionString: process.env.POSTGRES_URI || process.env.DATABASE_URL || 'postgres://localhost:5432/betcontrol'
 });
 
+// Endpoint de diagnóstico
+router.get('/diagnose', async (req, res) => {
+  try {
+    console.log('🔍 Iniciando diagnóstico...');
+    
+    // Verificar variables de entorno
+    const envVars = {
+      NODE_ENV: process.env.NODE_ENV,
+      POSTGRES_URI: process.env.POSTGRES_URI ? 'Configurada' : 'No configurada',
+      DATABASE_URL: process.env.DATABASE_URL ? 'Configurada' : 'No configurada',
+      PORT: process.env.PORT
+    };
+    
+    console.log('📋 Variables de entorno:', envVars);
+    
+    // Intentar conectar a la base de datos
+    let dbConnection = 'Falló';
+    let dbError = null;
+    
+    try {
+      const client = await pool.connect();
+      const result = await client.query('SELECT NOW() as current_time');
+      dbConnection = 'Exitosa';
+      client.release();
+    } catch (error) {
+      dbConnection = 'Falló';
+      dbError = error.message;
+      console.error('❌ Error de conexión a BD:', error.message);
+    }
+    
+    // Verificar si el archivo SQL existe
+    const initSQLPath = path.join(__dirname, '../config/init-db.sql');
+    const sqlFileExists = fs.existsSync(initSQLPath);
+    
+    res.json({
+      success: true,
+      diagnosis: {
+        environment: envVars,
+        databaseConnection: dbConnection,
+        databaseError: dbError,
+        sqlFileExists: sqlFileExists,
+        sqlFilePath: initSQLPath,
+        timestamp: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Error en diagnóstico:', error.message);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
+
 // Endpoint para inicializar la base de datos
 router.post('/init-database', async (req, res) => {
   try {
